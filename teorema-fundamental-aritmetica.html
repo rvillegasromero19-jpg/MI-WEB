@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Teorema Fundamental de la Aritmética — Demostraciones</title>
+<script>
+  MathJax = {
+    tex: { inlineMath: [['$', '$']], displayMath: [['$$', '$$']] }
+  };
+</script>
+<script id="MathJax-script" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+<style>
+  :root {
+    --bg: #fafaf8;
+    --text: #1a1a1a;
+    --muted: #6b6b6b;
+    --accent: #8b3a3a;
+    --line: #ddd8d0;
+    --panel: #ffffff;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: Georgia, 'Times New Roman', serif;
+    line-height: 1.6;
+  }
+  .container {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 48px 24px 96px;
+  }
+  h1 {
+    font-size: 1.5rem;
+    margin-bottom: 4px;
+    border-bottom: 2px solid var(--accent);
+    padding-bottom: 12px;
+  }
+  .subtitle {
+    color: var(--muted);
+    font-size: 0.95rem;
+    margin-bottom: 40px;
+  }
+  h2 {
+    font-size: 1.25rem;
+    color: var(--accent);
+    margin-top: 56px;
+    padding-top: 8px;
+    scroll-margin-top: 20px;
+  }
+  .statement {
+    background: var(--panel);
+    border-left: 4px solid var(--accent);
+    padding: 16px 20px;
+    margin: 20px 0 32px;
+    font-size: 1.02rem;
+  }
+  table.steps {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 0.95rem;
+  }
+  table.steps td {
+    padding: 7px 8px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+  td.num {
+    width: 28px;
+    color: var(--muted);
+    font-family: Georgia, serif;
+  }
+  td.reason {
+    width: 300px;
+    color: var(--muted);
+    font-style: italic;
+    font-size: 0.87rem;
+    text-align: right;
+  }
+  .qed {
+    text-align: right;
+    font-weight: bold;
+    margin-top: 8px;
+    font-size: 1.3rem;
+  }
+  .back-link {
+    display: inline-block;
+    margin-top: 12px;
+    font-size: 0.9rem;
+  }
+  a { color: var(--accent); }
+  hr.sep {
+    border: none;
+    border-top: 1px solid var(--line);
+    margin: 56px 0;
+  }
+  .nav {
+    font-size: 0.9rem;
+    margin-bottom: 32px;
+  }
+  .nav a { margin-right: 16px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <h1>Teorema 2.6 (Teorema 3.77, Teorema Fundamental de la Aritmética en el libro de Carranza)</h1>
+  <div class="subtitle">Demostraciones completas — existencia y unicidad de la descomposición</div>
+
+  <div class="nav">
+    <a href="#existencia">→ Existencia</a>
+    <a href="#unicidad">→ Unicidad</a>
+  </div>
+
+  <div class="statement">
+    Si $a$ es un número entero tal que $a \ne 0$ y $a \ne \pm 1$, entonces se puede expresar como el producto de
+    números primos positivos por $\pm 1$:
+    $$a = (\pm 1)\, p_1 p_2 \cdots p_n,$$
+    y tal descomposición es única salvo el orden de los factores.
+  </div>
+
+  <h2 id="existencia">Parte I. Existencia de la descomposición</h2>
+  <p><em>Demostración:</em> En efecto:</p>
+
+  <table class="steps">
+    <tr><td class="num">1.</td><td>$a \in \mathbb{Z} \land a \ne 0 \land a \ne \pm 1$</td><td class="reason">(hipótesis)</td></tr>
+    <tr><td class="num">2.</td><td>$a > 0 \lor a < 0$</td><td class="reason">(Teorema 3.30 d) y Definición 3.19 en 1)</td></tr>
+    <tr><td class="num">3.</td><td>$a < 0 \Rightarrow -a > 0$</td><td class="reason">(Lema 3.31 en 2)</td></tr>
+    <tr><td class="num">4.</td><td>$-a \ne 0 \land -a \ne \pm 1$</td><td class="reason">(Teorema 3.17 a), b) en 1)</td></tr>
+    <tr><td class="num">5.</td><td>$-a = p_1 p_2 \cdots p_n \Rightarrow a = -(-a) = -(p_1 p_2 \cdots p_n) = (-1)p_1 p_2 \cdots p_n$</td><td class="reason">(Teorema 3.17 b), d) en 4)</td></tr>
+    <tr><td class="num">6.</td><td>$\therefore$ basta demostrar la existencia para $a > 0$</td><td class="reason">(de 3, 4 y 5)</td></tr>
+    <tr><td class="num">7.</td><td>$a > 0 \land a \ne 1 \Rightarrow a > 1$</td><td class="reason">($c \ne 0 \Rightarrow |c| \ge 1$, cf. Teorema 3.46, en 1 y 2)</td></tr>
+    <tr><td class="num">8.</td><td>$a = 2$: los únicos divisores de 2 son $\pm 1$ y $\pm 2$, $2 \ne 0 \land 2 \ne \pm 1$</td><td class="reason">(Definición 3.47 y Ejercicio 53)</td></tr>
+    <tr><td class="num">9.</td><td>$\therefore$ 2 es primo, luego a = 2 admite la descomposición $a = p_1$ con $p_1 = 2$</td><td class="reason">(Definición 3.70 en 8)</td></tr>
+    <tr><td class="num">10.</td><td>Todo entero $m$ tal que $1 < m < a$ admite una descomposición $m = p_1 p_2 \cdots p_k$ con $p_1, \dots, p_k$ primos positivos</td><td class="reason">(hipótesis de inducción completa)</td></tr>
+    <tr><td class="num">11.</td><td>$a$ primo $\Rightarrow p_1 = a$ con $p_1 = a$ es su propia descomposición</td><td class="reason">(Definición 3.70 en 7)</td></tr>
+    <tr><td class="num">12.</td><td>$a$ no primo $\Rightarrow \exists b \in \mathbb{Z}\ /\ b \mid a\ \land\ b \ne \pm 1\ \land\ b \ne \pm a$</td><td class="reason">(Definición 3.70 en 1 y 7)</td></tr>
+    <tr><td class="num">13.</td><td>$b \mid a \Rightarrow \exists c \in \mathbb{Z}\ /\ bc = a$</td><td class="reason">(Definición 3.47 en 12)</td></tr>
+    <tr><td class="num">14.</td><td>$|b| \mid a \land |b| \ne 1 \land |b| \ne |a|$; puede suponerse $b > 0$</td><td class="reason">(Teorema 3.17 d) y 3.37 b) en 12 y 13)</td></tr>
+    <tr><td class="num">15.</td><td>$b \mid a \land a \ne 0 \Rightarrow |b| \le |a|$</td><td class="reason">(Ejercicio 53 en 12 y 1)</td></tr>
+    <tr><td class="num">16.</td><td>$|b| \le |a| \land |b| \ne |a| \Rightarrow 1 < b < a$</td><td class="reason">(Teorema 3.30 b) en 14 y 15)</td></tr>
+    <tr><td class="num">17.</td><td>$c = \pm 1 \Rightarrow a = \pm b$, lo que contradice 12; $c = \pm a \Rightarrow b = \pm 1$, lo que contradice 12</td><td class="reason">(Teorema 3.15 d) en 13 y 17)</td></tr>
+    <tr><td class="num">18.</td><td>$c \ne \pm 1 \land c \ne \pm a \Rightarrow 1 < c < a$</td><td class="reason">(Definición 3.47 y Ejercicio 53 en 13 y 17)</td></tr>
+    <tr><td class="num">19.</td><td>$\exists p_1, \dots, p_r$ primos positivos $/\ b = p_1 p_2 \cdots p_r\ \land\ \exists q_1, \dots, q_s$ primos positivos $/\ c = q_1 q_2 \cdots q_s$</td><td class="reason">(10 en 16 y 18)</td></tr>
+    <tr><td class="num">20.</td><td>$a = bc = (p_1 p_2 \cdots p_r)(q_1 q_2 \cdots q_s) = p_1 p_2 \cdots p_r q_1 q_2 \cdots q_s$</td><td class="reason">(PS 19 en 13, Teorema 3.15 a))</td></tr>
+    <tr><td class="num">21.</td><td>$\therefore a$ admite una descomposición en factores primos positivos</td><td class="reason">(Definición 3.70 en 20)</td></tr>
+    <tr><td class="num">22.</td><td>$\therefore$ todo entero $a > 1$ admite una descomposición en factores primos positivos</td><td class="reason">(Teorema 2.55 y Axioma N10 en 9, 11 y 21)</td></tr>
+    <tr><td class="num">23.</td><td>$\therefore a = (\pm 1) p_1 p_2 \cdots p_n$ para todo entero $a \ne 0,\ a \ne \pm 1$</td><td class="reason">(PS 22 en 5 y 6)</td></tr>
+  </table>
+  <div class="qed">■</div>
+
+  <hr class="sep">
+
+  <h2 id="unicidad">Parte II. Unicidad de la descomposición</h2>
+  <p><em>Demostración:</em> En efecto:</p>
+
+  <table class="steps">
+    <tr><td class="num">1.</td><td>$a = (\pm 1) p_1 p_2 \cdots p_r = (\pm 1) q_1 q_2 \cdots q_s$, con $p_1, \dots, p_r, q_1, \dots, q_s$ primos positivos</td><td class="reason">(hipótesis auxiliar, suposición por el absurdo)</td></tr>
+    <tr><td class="num">2.</td><td>$p_k > 0 \land q_j > 0 \Rightarrow p_1 p_2 \cdots p_r > 0 \land q_1 q_2 \cdots q_s > 0$</td><td class="reason">(Corolario 3.29 a) en 24)</td></tr>
+    <tr><td class="num">3.</td><td>$\therefore$ los signos $\pm 1$ coinciden, luego $p_1 p_2 \cdots p_r = q_1 q_2 \cdots q_s$</td><td class="reason">(Definición 3.47)</td></tr>
+    <tr><td class="num">4.</td><td>$p_1 \mid p_1(p_2 \cdots p_r)$</td><td class="reason">(Definición 3.47 en 24)</td></tr>
+    <tr><td class="num">5.</td><td>$p_1 p_2 \cdots p_r = q_1 q_2 \cdots q_s$</td><td class="reason">(propiedad reflexiva de la igualdad en 26)</td></tr>
+    <tr><td class="num">6.</td><td>$p_1 \mid q_1(q_2 \cdots q_s)$</td><td class="reason">(PS 28 en 27)</td></tr>
+    <tr><td class="num">7.</td><td>$p_1 \mid q_1 \lor p_1 \mid q_2 \cdots q_s$</td><td class="reason">(Teorema 3.73 en 29)</td></tr>
+    <tr><td class="num">8.</td><td>$\exists j \in \{1, 2, \dots, s\}\ /\ p_1 \mid q_j$ (reiterado un número finito de veces)</td><td class="reason">(Teorema 3.73 en 30, reiterado un número finito de veces)</td></tr>
+    <tr><td class="num">9.</td><td>$q_j$ primo $\Rightarrow$ sus únicos divisores son $\pm 1$ y $\pm q_j$</td><td class="reason">(Definición 3.70 en 24)</td></tr>
+    <tr><td class="num">10.</td><td>$p_1 \ne \pm 1 \land p_1 > 0 \land q_j > 0$</td><td class="reason">(Definición 3.70 en 24)</td></tr>
+    <tr><td class="num">11.</td><td>$\therefore p_1 = q_j$</td><td class="reason">(31, 32 y 33 en 24)</td></tr>
+    <tr><td class="num">12.</td><td>$p_1 p_2 \cdots p_r = p_1 q_2 q_3 \cdots q_s$, tomando $j = 1$</td><td class="reason">(Definición 3.70 en 24)</td></tr>
+    <tr><td class="num">13.</td><td>$p_1 \ne 0$</td><td class="reason">(Definición 3.70 en 24)</td></tr>
+    <tr><td class="num">14.</td><td>$\therefore p_2 p_3 \cdots p_r = q_2 q_3 \cdots q_s$</td><td class="reason">(Teorema 3.15 d) en 35 y 36)</td></tr>
+    <tr><td class="num">15.</td><td>$p_i = q_i$ para todo $i = 1, 2, \dots, \min\{r, s\}$</td><td class="reason">(27–37 reiterado, inducción completa, Teorema 2.55)</td></tr>
+    <tr><td class="num">16.</td><td>$r < s \Rightarrow 1 = q_{r+1} q_{r+2} \cdots q_s$</td><td class="reason">(hipótesis auxiliar, suposición por el absurdo, y Teorema 3.15 d) en 38)</td></tr>
+    <tr><td class="num">17.</td><td>$q_j$ primo $\land q_j > 0 \land q_j \ne 1 \Rightarrow q_j > 1$</td><td class="reason">(Definición 3.70 en 24)</td></tr>
+    <tr><td class="num">18.</td><td>$q_{r+1} q_{r+2} \cdots q_s > 1$</td><td class="reason">(Corolario 3.34 a) en 40, reiterado un número finito de veces)</td></tr>
+    <tr><td class="num">19.</td><td>$1 = q_{r+1} \cdots q_s \land q_{r+1} \cdots q_s > 1$</td><td class="reason">(39 y 41, contradicción)</td></tr>
+    <tr><td class="num">20.</td><td>$\therefore r \nless s$</td><td class="reason">(reducción al absurdo de 39 y 42)</td></tr>
+    <tr><td class="num">21.</td><td>$\therefore s \nless r$</td><td class="reason">(razonamiento análogo a 39–43, intercambiando $p_i$ y $q_j$)</td></tr>
+    <tr><td class="num">22.</td><td>$\therefore r = s$</td><td class="reason">(Teorema 3.30 b), d) en 43 y 44)</td></tr>
+    <tr><td class="num">23.</td><td>$\therefore a = (\pm 1) p_1 p_2 \cdots p_n$ y la descomposición es única salvo el orden de los factores</td><td class="reason">(38 y 45, y reducción al absurdo de 24)</td></tr>
+  </table>
+  <div class="qed">■</div>
+
+  <a class="back-link" href="#existencia">↑ Volver a la existencia</a>
+
+</div>
+</body>
+</html>
