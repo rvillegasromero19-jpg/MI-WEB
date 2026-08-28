@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Lema de Euclides — Demostración</title>
+<script>
+  MathJax = {
+    tex: { inlineMath: [['$', '$']], displayMath: [['$$', '$$']] }
+  };
+</script>
+<script id="MathJax-script" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+<style>
+  :root {
+    --bg: #fafaf8;
+    --text: #1a1a1a;
+    --muted: #6b6b6b;
+    --accent: #8b3a3a;
+    --line: #ddd8d0;
+    --panel: #ffffff;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: Georgia, 'Times New Roman', serif;
+    line-height: 1.6;
+  }
+  .container {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 48px 24px 96px;
+  }
+  h1 {
+    font-size: 1.6rem;
+    margin-bottom: 4px;
+    border-bottom: 2px solid var(--accent);
+    padding-bottom: 12px;
+  }
+  .subtitle {
+    color: var(--muted);
+    font-size: 0.95rem;
+    margin-bottom: 40px;
+  }
+  h2 {
+    font-size: 1.25rem;
+    color: var(--accent);
+    margin-top: 48px;
+    padding-top: 8px;
+    scroll-margin-top: 20px;
+  }
+  .statement {
+    background: var(--panel);
+    border-left: 4px solid var(--accent);
+    padding: 16px 20px;
+    margin: 20px 0 32px;
+    font-size: 1.02rem;
+  }
+  .note {
+    color: var(--muted);
+    font-size: 0.92rem;
+    margin-top: -20px;
+    margin-bottom: 20px;
+  }
+  table.steps {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 0.98rem;
+  }
+  table.steps td {
+    padding: 7px 8px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+  td.num {
+    width: 28px;
+    color: var(--muted);
+    font-family: Georgia, serif;
+  }
+  td.reason {
+    width: 280px;
+    color: var(--muted);
+    font-style: italic;
+    font-size: 0.87rem;
+    text-align: right;
+  }
+  .qed {
+    text-align: right;
+    font-weight: bold;
+    margin-top: 8px;
+    font-size: 1.3rem;
+  }
+  .closing {
+    margin-top: 32px;
+    font-size: 0.98rem;
+    color: var(--text);
+  }
+  a { color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <h1>Proposición 3. Lema de Euclides</h1>
+  <div class="subtitle">Demostración completa</div>
+
+  <p class="note">(Teorema 3.73 del libro de Carranza)</p>
+
+  <div class="statement">
+    Si $p$ es primo y $p \mid ab$, entonces $p \mid a$ ó $p \mid b$.
+  </div>
+
+  <h2 id="demostracion">Demostración</h2>
+  <p><em>En efecto:</em></p>
+
+  <table class="steps">
+    <tr><td class="num">1.</td><td>$p$ primo $\ \land\ p \mid ab$</td><td class="reason">(hipótesis)</td></tr>
+    <tr><td class="num">2.</td><td>$p \nmid a$</td><td class="reason">(hipótesis auxiliar)</td></tr>
+    <tr><td class="num">3.</td><td>$D = p \land a \implies D \mid p\ \land\ D \mid a\ \land\ D > 0$</td><td class="reason">(Teorema 3.63 D1 en 1)</td></tr>
+    <tr><td class="num">4.</td><td>$p$ primo $\implies$ sus únicos divisores son $\pm 1$ y $\pm p$</td><td class="reason">(Definición 3.70 en 1)</td></tr>
+    <tr><td class="num">5.</td><td>$D = 1 \lor D = p$</td><td class="reason">(Teorema 3.63 y Definición 3.36 en 3 y 4)</td></tr>
+    <tr><td class="num">6.</td><td>$D = p \implies p \mid a$</td><td class="reason">(PS 5 en 3)</td></tr>
+    <tr><td class="num">7.</td><td>$p \mid a\ \land\ p \nmid a$</td><td class="reason">(6 y 2, contradicción)</td></tr>
+    <tr><td class="num">8.</td><td>$\therefore D = p \land a = 1$, es decir $p \perp a$</td><td class="reason">(reducción al absurdo de 6 y 7, y Definición 3.65 en 5)</td></tr>
+    <tr><td class="num">9.</td><td>$\exists s, t \in \mathbb{Z}\ /\ ps + at = 1$</td><td class="reason">(Teorema 3.66 en 8)</td></tr>
+    <tr><td class="num">10.</td><td>$b = b$</td><td class="reason">(propiedad reflexiva de la igualdad)</td></tr>
+    <tr><td class="num">11.</td><td>$(ps + at)b = 1 \cdot b = b$</td><td class="reason">(PS 9 en 10, Teorema 3.15 b), c))</td></tr>
+    <tr><td class="num">12.</td><td>$p(sb) + (ab)t = b$</td><td class="reason">(Teorema 3.15 a), b), e) en 11)</td></tr>
+    <tr><td class="num">13.</td><td>$p \mid p(sb)$</td><td class="reason">(Definición 3.47 en 12)</td></tr>
+    <tr><td class="num">14.</td><td>$p \mid ab$</td><td class="reason">(hipótesis, 1)</td></tr>
+    <tr><td class="num">15.</td><td>$p \mid \big(p(sb) + (ab)t\big)$</td><td class="reason">(Teorema 3.55 en 13 y 14)</td></tr>
+    <tr><td class="num">16.</td><td>$\therefore p \mid b$</td><td class="reason">(PS 12 en 15)</td></tr>
+    <tr><td class="num">17.</td><td>$\therefore p \mid a \lor p \mid b$</td><td class="reason">(de 2 y 16)</td></tr>
+  </table>
+
+  <div class="qed">■</div>
+
+  <p class="closing">
+    Los pasos 2)–8) reproducen, con el aparato de la Identidad de Bézout, lo que el texto obtiene de golpe con
+    el Teorema 3.71: si $p$ es primo y $a$ es un entero cualquiera, entonces $p \perp a$ o bien $p \mid a$. Esa es
+    exactamente la vía que sigue la demostración del Teorema 3.73 en el libro, la cual concluye con el
+    Teorema 3.52 en lugar del Teorema 3.55.
+  </p>
+
+</div>
+</body>
+</html>
