@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Criterio de invertibilidad modular — Demostración</title>
+<script>
+  MathJax = {
+    tex: { inlineMath: [['$', '$']], displayMath: [['$$', '$$']] }
+  };
+</script>
+<script id="MathJax-script" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+<style>
+  :root {
+    --bg: #fafaf8;
+    --text: #1a1a1a;
+    --muted: #6b6b6b;
+    --accent: #8b3a3a;
+    --line: #ddd8d0;
+    --panel: #ffffff;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: Georgia, 'Times New Roman', serif;
+    line-height: 1.6;
+  }
+  .container {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 48px 24px 96px;
+  }
+  h1 {
+    font-size: 1.5rem;
+    margin-bottom: 4px;
+    border-bottom: 2px solid var(--accent);
+    padding-bottom: 12px;
+  }
+  .subtitle {
+    color: var(--muted);
+    font-size: 0.95rem;
+    margin-bottom: 40px;
+  }
+  h2 {
+    font-size: 1.2rem;
+    color: var(--accent);
+    margin-top: 48px;
+    padding-top: 8px;
+    scroll-margin-top: 20px;
+  }
+  .statement {
+    background: var(--panel);
+    border-left: 4px solid var(--accent);
+    padding: 16px 20px;
+    margin: 20px 0 32px;
+    font-size: 1.02rem;
+  }
+  table.steps {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 0.95rem;
+  }
+  table.steps td {
+    padding: 7px 8px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+  td.num {
+    width: 26px;
+    color: var(--muted);
+    font-family: Georgia, serif;
+  }
+  td.reason {
+    width: 280px;
+    color: var(--muted);
+    font-style: italic;
+    font-size: 0.87rem;
+    text-align: right;
+  }
+  .qed {
+    text-align: right;
+    font-weight: bold;
+    margin-top: 8px;
+    font-size: 1.3rem;
+  }
+  a { color: var(--accent); }
+  .nav {
+    font-size: 0.9rem;
+    margin-bottom: 32px;
+  }
+  .nav a { margin-right: 16px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <h1>Proposición 2. Criterio de invertibilidad modular</h1>
+  <div class="subtitle">Demostración completa — implicación directa e inversa</div>
+
+  <div class="nav">
+    <a href="#parte1">→ Parte I</a>
+    <a href="#parte2">→ Parte II</a>
+  </div>
+
+  <div class="statement">
+    Sean $a$ y $m$ enteros con $m > 1$. Existe $x \in \mathbb{Z}$ tal que $ax \equiv 1 \pmod{m}$ si y sólo si el
+    máximo común divisor de $a$ y $m$ es 1, es decir, si y sólo si $a \perp m$ en el sentido de la Definición 3.65.
+  </div>
+
+  <p><em>Demostración: En efecto:</em></p>
+
+  <h2 id="parte1">Parte I. ($\Leftarrow$) $a \perp m \implies \exists x \in \mathbb{Z} \ /\ ax \equiv 1 \pmod{m}$.</h2>
+
+  <table class="steps">
+    <tr><td class="num">1.</td><td>$a, m \in \mathbb{Z}\ \land\ m > 1\ \land\ a \land m = 1$</td><td class="reason">(hipótesis)</td></tr>
+    <tr><td class="num">2.</td><td>$\exists s, t \in \mathbb{Z}\ /\ as + mt = 1$</td><td class="reason">(Teorema 3.66 en 1)</td></tr>
+    <tr><td class="num">3.</td><td>$as - 1 = -(mt) = m(-t)$</td><td class="reason">(Definición 3.38 y Teorema 3.17 d) en 2)</td></tr>
+    <tr><td class="num">4.</td><td>$\exists (-t) \in \mathbb{Z}$</td><td class="reason">(Teorema 3.11 d) en 2)</td></tr>
+    <tr><td class="num">5.</td><td>$m \mid (as - 1)$</td><td class="reason">(Definición 3.47 en 3 y 4)</td></tr>
+    <tr><td class="num">6.</td><td>$as - 1$ es múltiplo de $m$, es decir $as \equiv 1 \pmod{m}$</td><td class="reason">(Ejercicio 57 en 5)</td></tr>
+    <tr><td class="num">7.</td><td>$\therefore \exists x \in \mathbb{Z} \ /\ ax \equiv 1 \pmod{m}$, con $x = s$</td><td class="reason">(PS 2 en 6)</td></tr>
+  </table>
+
+  <h2 id="parte2">Parte II. ($\Rightarrow$) $\exists x \in \mathbb{Z} \ /\ ax \equiv 1 \pmod{m} \implies a \perp m$.</h2>
+
+  <table class="steps">
+    <tr><td class="num">1.</td><td>$\exists x \in \mathbb{Z} \ /\ ax \equiv 1 \pmod{m}$</td><td class="reason">(hipótesis)</td></tr>
+    <tr><td class="num">2.</td><td>$ax - 1$ es múltiplo de $m$, es decir $\exists k \in \mathbb{Z} \ /\ ax - 1 = mk$</td><td class="reason">(Ejercicio 57 y Definición 3.47 en 8)</td></tr>
+    <tr><td class="num">3.</td><td>$ax + m(-k) = 1$</td><td class="reason">(Definición 3.38, Teorema 3.11 a), d) y Teorema 3.17 d) en 9)</td></tr>
+    <tr><td class="num">4.</td><td>$D = a \land m \implies D \mid a \ \land \ D \mid m$</td><td class="reason">(Teorema 3.63 D1)</td></tr>
+    <tr><td class="num">5.</td><td>$D \mid \big(ax + m(-k)\big)$</td><td class="reason">(Teorema 3.55 en 11)</td></tr>
+    <tr><td class="num">6.</td><td>$D \mid 1$</td><td class="reason">(PS 10 en 12)</td></tr>
+    <tr><td class="num">7.</td><td>$D > 0 \ \land \ |D| \le |1| = 1$</td><td class="reason">(Teorema 3.63 y Ejercicio 53 en 13)</td></tr>
+    <tr><td class="num">8.</td><td>$\therefore D = a \land m = 1$, es decir $a \perp m$</td><td class="reason">(Teorema 3.30 b) y Definición 3.65 en 14)</td></tr>
+    <tr><td class="num">9.</td><td>$\therefore \exists x \in \mathbb{Z} \ /\ ax \equiv 1 \pmod{m}$ si y sólo si $a \perp m$</td><td class="reason">(de 7 y 15)</td></tr>
+  </table>
+
+  <div class="qed">■</div>
+
+</div>
+</body>
+</html>
