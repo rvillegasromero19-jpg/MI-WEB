@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Identidad de Bézout — Demostración</title>
+<script>
+  MathJax = {
+    tex: { inlineMath: [['$', '$']], displayMath: [['$$', '$$']] }
+  };
+</script>
+<script id="MathJax-script" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+<style>
+  :root {
+    --bg: #fafaf8;
+    --text: #1a1a1a;
+    --muted: #6b6b6b;
+    --accent: #8b3a3a;
+    --line: #ddd8d0;
+    --panel: #ffffff;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: Georgia, 'Times New Roman', serif;
+    line-height: 1.6;
+  }
+  .container {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 48px 24px 96px;
+  }
+  h1 {
+    font-size: 1.6rem;
+    margin-bottom: 4px;
+    border-bottom: 2px solid var(--accent);
+    padding-bottom: 12px;
+  }
+  .subtitle {
+    color: var(--muted);
+    font-size: 0.95rem;
+    margin-bottom: 40px;
+  }
+  h2 {
+    font-size: 1.25rem;
+    color: var(--accent);
+    margin-top: 56px;
+    padding-top: 8px;
+    scroll-margin-top: 20px;
+  }
+  .statement {
+    background: var(--panel);
+    border-left: 4px solid var(--accent);
+    padding: 16px 20px;
+    margin: 20px 0 32px;
+    font-size: 1.02rem;
+  }
+  .note {
+    color: var(--muted);
+    font-size: 0.92rem;
+    margin-top: -20px;
+    margin-bottom: 20px;
+  }
+  table.steps {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 0.95rem;
+  }
+  table.steps td {
+    padding: 7px 8px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+  td.num {
+    width: 30px;
+    color: var(--muted);
+    font-family: Georgia, serif;
+  }
+  td.reason {
+    width: 300px;
+    color: var(--muted);
+    font-style: italic;
+    font-size: 0.87rem;
+    text-align: right;
+  }
+  .qed {
+    text-align: right;
+    font-weight: bold;
+    margin-top: 8px;
+    font-size: 1.3rem;
+  }
+  a { color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <h1>Proposición 1. Identidad de Bézout</h1>
+  <div class="subtitle">Demostración completa</div>
+
+  <p class="note">(Contenida en el Teorema 3.63 del libro de Carranza)</p>
+
+  <div class="statement">
+    Sean $a, b$ enteros no ambos nulos y $D$ el máximo común divisor de $a$ y $b$ (denotado $a \land b$ en el texto).
+    Entonces existen $s, t \in \mathbb{Z}$ tales que
+    $$D = as + bt,$$
+    es decir, el máximo común divisor de $a$ y $b$ es una combinación lineal de $a$ y $b$ en el sentido de la
+    Definición 3.54.
+  </div>
+
+  <h2 id="demostracion">Demostración</h2>
+  <p><em>En efecto:</em></p>
+
+  <table class="steps">
+    <tr><td class="num">1.</td><td>$a, b \in \mathbb{Z}\ \land\ \lnot(a = 0 \land b = 0)\ \land\ D = a \land b$</td><td class="reason">(hipótesis)</td></tr>
+    <tr><td class="num">2.</td><td>$b = 0 \Rightarrow a \ne 0 \land |a| \mid 0 \Rightarrow D = |a| \land 0 = |a|$</td><td class="reason">(Teorema 3.16 a), Definición 3.47 y Ejercicio 65 en 1)</td></tr>
+    <tr><td class="num">3.</td><td>$D = |a| = a(\pm 1) + b \cdot 0$, con $s = \pm 1 \land t = 0$</td><td class="reason">(Definición 3.36, Teorema 3.15 c) y Teorema 3.16 a) en 2)</td></tr>
+    <tr><td class="num">4.</td><td>$b \ne 0 \Rightarrow a \land b = a \land |b|\ \land\ \big(D = as + |b|t \Rightarrow D = as + b(\pm t)\big)$</td><td class="reason">(Ejercicio 56, Ejercicio 66, Definición 3.36 y Teorema 3.17 d) en 1)</td></tr>
+    <tr><td class="num">5.</td><td>$\therefore$ basta demostrar la tesis para $b > 0$</td><td class="reason">(de 2, 3 y 4)</td></tr>
+    <tr><td class="num">6.</td><td>$r_{-1} = a \land r_0 = b$</td><td class="reason">(convención de notación)</td></tr>
+    <tr><td class="num">7.</td><td>$\exists q_i, r_i \in \mathbb{Z}\ /\ r_{i-2} = r_{i-1}q_i + r_i,\ 0 \le r_i < r_{i-1},$ para $i = 1, 2, \dots$</td><td class="reason">(Teorema 3.57 en 5 y 6)</td></tr>
+    <tr><td class="num">8.</td><td>$r_0 > r_1 > r_2 > \dots \ge 0$</td><td class="reason">(Teorema 3.30 c) en 7)</td></tr>
+    <tr><td class="num">9.</td><td>$\exists k \ge 0\ /\ r_k \ne 0\ \land\ r_{k+1} = 0$</td><td class="reason">(Axioma N10 en 8)</td></tr>
+    <tr><td class="num">10.</td><td>$r_k = a \land b = D$</td><td class="reason">(Ejercicio 69 en 9; Ejercicios 67 y 65 reiterados)</td></tr>
+    <tr><td class="num">11.</td><td>$r_{-1} = a = a \cdot 1 + b \cdot 0$, es decir $s_{-1} = 1 \land t_{-1} = 0$</td><td class="reason">(Teorema 3.15 c), Teorema 3.16 a) y Teorema 3.11 c) en 6)</td></tr>
+    <tr><td class="num">12.</td><td>$r_0 = b = a \cdot 0 + b \cdot 1$, es decir $s_0 = 0 \land t_0 = 1$</td><td class="reason">(Teorema 3.15 c), Teorema 3.16 a) y Teorema 3.11 c) en 6)</td></tr>
+    <tr><td class="num">13.</td><td>$\exists s_{i-2}, t_{i-2}, s_{i-1}, t_{i-1} \in \mathbb{Z}\ /\ r_{i-2} = as_{i-2} + bt_{i-2}\ \land\ r_{i-1} = as_{i-1} + bt_{i-1}$</td><td class="reason">(hipótesis de inducción completa)</td></tr>
+    <tr><td class="num">14.</td><td>$r_i = r_{i-2} - r_{i-1}q_i$</td><td class="reason">(Definición 3.38 y Teorema 3.41 en 7)</td></tr>
+    <tr><td class="num">15.</td><td>$r_i = (as_{i-2} + bt_{i-2}) - (as_{i-1} + bt_{i-1})q_i$</td><td class="reason">(PS 13 en 14)</td></tr>
+    <tr><td class="num">16.</td><td>$r_i = a(s_{i-2} - s_{i-1}q_i) + b(t_{i-2} - t_{i-1}q_i)$</td><td class="reason">(Teorema 3.15 a), b), e) y Teorema 3.11 a), b) en 15)</td></tr>
+    <tr><td class="num">17.</td><td>$\exists s_i, t_i \in \mathbb{Z}\ /\ s_i = s_{i-2} - s_{i-1}q_i\ \land\ t_i = t_{i-2} - t_{i-1}q_i$</td><td class="reason">(Definición 3.13 y Teorema 3.41 en 16)</td></tr>
+    <tr><td class="num">18.</td><td>$r_i = as_i + bt_i$</td><td class="reason">(PS 17 en 16)</td></tr>
+    <tr><td class="num">19.</td><td>$\therefore$ todo residuo $r_i,\ i = -1, 0, 1, \dots, k$, es combinación lineal de $a$ y $b$</td><td class="reason">(Teorema 2.55 en 11, 12 y 18)</td></tr>
+    <tr><td class="num">20.</td><td>$D = r_k = as_k + bt_k$</td><td class="reason">(PS 10 en 19)</td></tr>
+    <tr><td class="num">21.</td><td>$\therefore \exists s, t \in \mathbb{Z}\ /\ D = as + bt$, con $s = s_k \land t = t_k$</td><td class="reason">(Definición 3.54 en 20)</td></tr>
+  </table>
+
+  <div class="qed">∎</div>
+
+</div>
+</body>
+</html>
