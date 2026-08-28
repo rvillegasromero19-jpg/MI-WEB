@@ -6,6 +6,13 @@
 <title>Canal seguro — RSA en vivo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script>
+  MathJax = {
+    tex: { inlineMath: [['$', '$']], displayMath: [['$$', '$$']] },
+    options: { skipHtmlTags: ['script','noscript','style','textarea','pre','code'] }
+  };
+</script>
+<script id="MathJax-script" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
 <style>
   :root{
     --bg:#0f1720;
@@ -624,6 +631,9 @@ function renderPaper(){
     ${limitationsSection()}
   </div>`;
   area.innerHTML = html;
+  if(window.MathJax && window.MathJax.typesetPromise){
+    window.MathJax.typesetPromise([area]);
+  }
 }
 
 /* =========================================================
