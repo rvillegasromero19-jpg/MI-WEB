@@ -1,0 +1,117 @@
+<div>
+<h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Cinta de Möbius paramétrica interactiva: controles para semigiros, radio, ancho, ondulación, reflexión y rotación; el mouse deforma la superficie y el arrastre gira la cámara.</h2>
+
+<div id="mb-stage" style="position:relative;width:100%;height:400px;background:var(--surface-1);border-radius:12px;overflow:hidden;touch-action:none;cursor:grab">
+  <canvas id="mb-cv" style="display:block;width:100%;height:100%"></canvas>
+  <div id="mb-hud" style="position:absolute;top:10px;left:12px;font-size:12px;line-height:1.6;color:var(--text-secondary);pointer-events:none">—</div>
+  <div style="position:absolute;bottom:10px;left:12px;font-size:11px;color:var(--text-muted);pointer-events:none">mouse = deformar · arrastrar = girar · rueda = zoom</div>
+</div>
+
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px 18px;margin-top:1rem">
+  <div style="display:flex;align-items:center;gap:10px"><label for="mb-n" style="font-size:13px;color:var(--text-secondary);min-width:66px">Semigiros</label><input id="mb-n" type="range" min="0" max="8" step="1" value="1" style="flex:1"><span id="mb-n-o" style="font-size:13px;font-weight:500;min-width:14px">1</span></div>
+  <div style="display:flex;align-items:center;gap:10px"><label for="mb-R" style="font-size:13px;color:var(--text-secondary);min-width:66px">Radio</label><input id="mb-R" type="range" min="1.2" max="3" step="0.05" value="2" style="flex:1"><span id="mb-R-o" style="font-size:13px;font-weight:500;min-width:26px">2.0</span></div>
+  <div style="display:flex;align-items:center;gap:10px"><label for="mb-w" style="font-size:13px;color:var(--text-secondary);min-width:66px">Ancho</label><input id="mb-w" type="range" min="0.15" max="1.4" step="0.05" value="0.8" style="flex:1"><span id="mb-w-o" style="font-size:13px;font-weight:500;min-width:26px">0.8</span></div>
+  <div style="display:flex;align-items:center;gap:10px"><label for="mb-k" style="font-size:13px;color:var(--text-secondary);min-width:66px">Armónico</label><input id="mb-k" type="range" min="0" max="7" step="1" value="3" style="flex:1"><span id="mb-k-o" style="font-size:13px;font-weight:500;min-width:14px">3</span></div>
+  <div style="display:flex;align-items:center;gap:10px"><label for="mb-a" style="font-size:13px;color:var(--text-secondary);min-width:66px">Onda radial</label><input id="mb-a" type="range" min="-0.9" max="0.9" step="0.01" value="0" style="flex:1"><span id="mb-a-o" style="font-size:13px;font-weight:500;min-width:32px">0.00</span></div>
+  <div style="display:flex;align-items:center;gap:10px"><label for="mb-b" style="font-size:13px;color:var(--text-secondary);min-width:66px">Onda vert.</label><input id="mb-b" type="range" min="-1.1" max="1.1" step="0.01" value="0" style="flex:1"><span id="mb-b-o" style="font-size:13px;font-weight:500;min-width:32px">0.00</span></div>
+  <div style="display:flex;align-items:center;gap:10px"><label for="mb-s" style="font-size:13px;color:var(--text-secondary);min-width:66px">Velocidad</label><input id="mb-s" type="range" min="0" max="1.2" step="0.02" value="0.35" style="flex:1"><span id="mb-s-o" style="font-size:13px;font-weight:500;min-width:32px">0.35</span></div>
+  <div style="display:flex;align-items:center;gap:10px"><label for="mb-p" style="font-size:13px;color:var(--text-secondary);min-width:66px">Fase φ</label><input id="mb-p" type="range" min="0" max="6.28" step="0.01" value="0" style="flex:1"><span id="mb-p-o" style="font-size:13px;font-weight:500;min-width:32px">0.00</span></div>
+</div>
+
+<div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:14px">
+  <button id="mb-auto" type="button">Rotación</button>
+  <button id="mb-refl" type="button">Reflexión</button>
+  <button id="mb-foll" type="button">Seguir mouse</button>
+  <button id="mb-edge" type="button">Bordes</button>
+  <button id="mb-face" type="button">Dos caras</button>
+  <button id="mb-nrm" type="button">Vector normal</button>
+  <button id="mb-rst" type="button">Reiniciar</button>
+</div>
+</div>
+<script>
+(function(){
+var cv=document.getElementById('mb-cv'),ctx=cv.getContext('2d'),stage=document.getElementById('mb-stage'),hud=document.getElementById('mb-hud');
+var W=1,H=1,DPR=1;
+var S={n:1,R:2,w:.8,k:3,a:0,b:0,sp:.35,ph:0,auto:1,refl:0,foll:1,edge:1,face:0,nrm:1};
+var ay=.7,ax=-.5,cam=9,foc=520,drag=0,px=0,py=0,tt=0;
+var NU=160,NV=8,TAU=Math.PI*2;
+var PT=new Float32Array((NU+1)*(NV+1)*3),CP=new Float32Array((NU+1)*(NV+1)*3),PR=new Float32Array((NU+1)*(NV+1)*2);
+var F=NU*NV,fd=new Float32Array(F),fl=new Float32Array(F),fs=new Float32Array(F),fu=new Float32Array(F),fq=new Float32Array(F*8),idx=new Array(F);
+for(var q=0;q<F;q++)idx[q]=q;
+
+function pnt(u,v,o,ar){var rr=S.R+ar*Math.cos(S.k*u),cz=S.b*Math.sin(S.k*u),th=S.n*u/2+S.ph,cs=Math.cos(th),sn=Math.sin(th);
+ o[0]=rr*Math.cos(u)+v*cs*Math.cos(u);o[1]=rr*Math.sin(u)+v*cs*Math.sin(u);o[2]=(cz+v*sn)*(S.refl?-1:1);return o;}
+var tmp=[0,0,0],t1=[0,0,0],t2=[0,0,0],t3=[0,0,0],t4=[0,0,0];
+
+function resize(){var r=stage.getBoundingClientRect();DPR=Math.min(window.devicePixelRatio||1,2);W=r.width;H=r.height;cv.width=Math.round(W*DPR);cv.height=Math.round(H*DPR);ctx.setTransform(DPR,0,0,DPR,0,0);}
+
+function frame(dt){
+ if(S.auto)ay+=S.sp*dt; tt+=dt;
+ var ca=Math.cos(ay),sa=Math.sin(ay),cb=Math.cos(ax),sb=Math.sin(ax),i,j,o,x,y,z,y2,z2,zc,sc;
+ for(i=0;i<=NU;i++){var u=TAU*i/NU;
+  for(j=0;j<=NV;j++){var v=-S.w+2*S.w*j/NV;o=(i*(NV+1)+j);pnt(u,v,tmp,S.a);
+   x=tmp[0]*ca+tmp[2]*sa;z=-tmp[0]*sa+tmp[2]*ca;y=tmp[1];y2=y*cb-z*sb;z2=y*sb+z*cb;
+   CP[o*3]=x;CP[o*3+1]=y2;CP[o*3+2]=z2;zc=z2+cam;sc=foc/(zc>.4?zc:.4);
+   PR[o*2]=W/2+x*sc;PR[o*2+1]=H/2-y2*sc;}}
+ ctx.clearRect(0,0,W,H);
+ var lx=-.42,ly=.62,lz=-.66,f=0;
+ for(i=0;i<NU;i++)for(j=0;j<NV;j++){
+  var A=(i*(NV+1)+j)*3,B=((i+1)*(NV+1)+j)*3,C=((i+1)*(NV+1)+j+1)*3,D=(i*(NV+1)+j+1)*3;
+  var ux=CP[B]-CP[A],uy=CP[B+1]-CP[A+1],uz=CP[B+2]-CP[A+2],vx=CP[D]-CP[A],vy=CP[D+1]-CP[A+1],vz=CP[D+2]-CP[A+2];
+  var nx=uy*vz-uz*vy,ny=uz*vx-ux*vz,nz=ux*vy-uy*vx,ln=Math.sqrt(nx*nx+ny*ny+nz*nz)||1;nx/=ln;ny/=ln;nz/=ln;
+  var lam=Math.abs(nx*lx+ny*ly+nz*lz);
+  fd[f]=(CP[A+2]+CP[B+2]+CP[C+2]+CP[D+2])*.25;fl[f]=lam;fs[f]=nz>0?1:0;fu[f]=TAU*(i+.5)/NU;
+  var g=f*8;fq[g]=PR[A/3*2];fq[g+1]=PR[A/3*2+1];fq[g+2]=PR[B/3*2];fq[g+3]=PR[B/3*2+1];fq[g+4]=PR[C/3*2];fq[g+5]=PR[C/3*2+1];fq[g+6]=PR[D/3*2];fq[g+7]=PR[D/3*2+1];f++;}
+ idx.sort(function(p,r){return fd[r]-fd[p]});
+ for(var m=0;m<F;m++){var e=idx[m],g=e*8,h;
+  if(S.face)h=fs[e]?188:342;else h=265+72*Math.cos(fu[e]);
+  var li=Math.round(26+50*fl[e]+22*Math.pow(fl[e],14)),col='hsl('+h.toFixed(0)+' 62% '+li+'%)';
+  ctx.beginPath();ctx.moveTo(fq[g],fq[g+1]);ctx.lineTo(fq[g+2],fq[g+3]);ctx.lineTo(fq[g+4],fq[g+5]);ctx.lineTo(fq[g+6],fq[g+7]);ctx.closePath();
+  ctx.fillStyle=col;ctx.strokeStyle=col;ctx.lineWidth=1;ctx.fill();ctx.stroke();}
+ if(S.edge){var odd=S.n%2!==0;
+  ctx.lineWidth=2.2;ctx.lineJoin='round';
+  if(odd){ctx.strokeStyle='#F0997B';ctx.beginPath();
+   for(i=0;i<=NU;i++){o=(i*(NV+1)+NV)*2;i?ctx.lineTo(PR[o],PR[o+1]):ctx.moveTo(PR[o],PR[o+1]);}
+   for(i=0;i<=NU;i++){o=(i*(NV+1))*2;ctx.lineTo(PR[o],PR[o+1]);}ctx.stroke();}
+  else{ctx.strokeStyle='#F0997B';ctx.beginPath();for(i=0;i<=NU;i++){o=(i*(NV+1)+NV)*2;i?ctx.lineTo(PR[o],PR[o+1]):ctx.moveTo(PR[o],PR[o+1]);}ctx.stroke();
+   ctx.strokeStyle='#5DCAA5';ctx.beginPath();for(i=0;i<=NU;i++){o=(i*(NV+1))*2;i?ctx.lineTo(PR[o],PR[o+1]):ctx.moveTo(PR[o],PR[o+1]);}ctx.stroke();}}
+ if(S.nrm){var u0=(tt*.55)%TAU,ep=.0035;
+  pnt(u0,0,t1,S.a);pnt(u0+ep,0,t2,S.a);pnt(u0-ep,0,t3,S.a);pnt(u0,ep,t4,S.a);
+  var au=[t2[0]-t3[0],t2[1]-t3[1],t2[2]-t3[2]],av=[t4[0]-t1[0],t4[1]-t1[1],t4[2]-t1[2]];
+  var mx=au[1]*av[2]-au[2]*av[1],my=au[2]*av[0]-au[0]*av[2],mz=au[0]*av[1]-au[1]*av[0],ml=Math.sqrt(mx*mx+my*my+mz*mz)||1;
+  var pA=[t1[0],t1[1],t1[2]],pB=[t1[0]+.7*mx/ml,t1[1]+.7*my/ml,t1[2]+.7*mz/ml];
+  function pj(p){var X=p[0]*ca+p[2]*sa,Z=-p[0]*sa+p[2]*ca,Y=p[1],Y2=Y*cb-Z*sb,Z2=Y*sb+Z*cb,zz=Z2+cam,s=foc/(zz>.4?zz:.4);return[W/2+X*s,H/2-Y2*s];}
+  var qa=pj(pA),qb=pj(pB);
+  ctx.strokeStyle='#EF9F27';ctx.lineWidth=2.2;ctx.beginPath();ctx.moveTo(qa[0],qa[1]);ctx.lineTo(qb[0],qb[1]);ctx.stroke();
+  ctx.fillStyle='#EF9F27';ctx.beginPath();ctx.arc(qb[0],qb[1],3.6,0,TAU);ctx.fill();
+  ctx.fillStyle='#D4537E';ctx.beginPath();ctx.arc(qa[0],qa[1],4.2,0,TAU);ctx.fill();}
+ var odd2=S.n%2!==0;
+ hud.innerHTML='<span style="color:var(--text-primary);font-weight:500">'+(odd2?'No orientable':'Orientable')+'</span> · '+(odd2?'1 cara, 1 borde':'2 caras, 2 bordes')+'<br>χ = 0 · '+(S.refl?'quiralidad invertida':'quiralidad directa');
+}
+var last=0;
+function loop(t){var dt=Math.min((t-last)/1000,.05);last=t;frame(dt);requestAnimationFrame(loop);}
+
+function bind(id,key,dec){var el=document.getElementById(id),ou=document.getElementById(id+'-o');
+ el.addEventListener('input',function(){S[key]=parseFloat(el.value);ou.textContent=dec?S[key].toFixed(dec):S[key];});}
+bind('mb-n','n',0);bind('mb-R','R',1);bind('mb-w','w',1);bind('mb-k','k',0);bind('mb-a','a',2);bind('mb-b','b',2);bind('mb-s','sp',2);bind('mb-p','ph',2);
+function tog(id,key){var el=document.getElementById(id);
+ function up(){el.style.background=S[key]?'var(--bg-accent)':'';el.style.color=S[key]?'var(--text-accent)':'';}
+ el.addEventListener('click',function(){S[key]=S[key]?0:1;up();});up();}
+tog('mb-auto','auto');tog('mb-refl','refl');tog('mb-foll','foll');tog('mb-edge','edge');tog('mb-face','face');tog('mb-nrm','nrm');
+document.getElementById('mb-rst').addEventListener('click',function(){ay=.7;ax=-.5;cam=9;
+ var d={'mb-n':1,'mb-R':2,'mb-w':.8,'mb-k':3,'mb-a':0,'mb-b':0,'mb-s':.35,'mb-p':0},kk={'mb-n':'n','mb-R':'R','mb-w':'w','mb-k':'k','mb-a':'a','mb-b':'b','mb-s':'sp','mb-p':'ph'};
+ for(var q in d){var e=document.getElementById(q);e.value=d[q];S[kk[q]]=d[q];e.dispatchEvent(new Event('input'));}});
+
+stage.addEventListener('pointerdown',function(e){drag=1;px=e.clientX;py=e.clientY;stage.setPointerCapture(e.pointerId);stage.style.cursor='grabbing';});
+stage.addEventListener('pointerup',function(e){drag=0;stage.style.cursor='grab';});
+stage.addEventListener('pointermove',function(e){
+ if(drag){ay-=(e.clientX-px)*.008;ax+=(e.clientY-py)*.008;ax=Math.max(-1.5,Math.min(1.5,ax));px=e.clientX;py=e.clientY;return;}
+ if(!S.foll)return;var r=stage.getBoundingClientRect();
+ var nx2=(e.clientX-r.left)/r.width,ny2=(e.clientY-r.top)/r.height;
+ S.a=(nx2*2-1)*.9;S.b=(1-ny2*2)*1.1;
+ var ea=document.getElementById('mb-a'),eb=document.getElementById('mb-b');
+ ea.value=S.a;eb.value=S.b;document.getElementById('mb-a-o').textContent=S.a.toFixed(2);document.getElementById('mb-b-o').textContent=S.b.toFixed(2);});
+stage.addEventListener('wheel',function(e){e.preventDefault();cam=Math.max(4.5,Math.min(18,cam+e.deltaY*.006));},{passive:false});
+window.addEventListener('resize',resize);resize();requestAnimationFrame(function(t){last=t;loop(t);});
+})();
+</script>
